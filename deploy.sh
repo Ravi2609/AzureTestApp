@@ -115,8 +115,8 @@ if [ -e "$DEPLOYMENT_TARGET/package.json" ]; then
 fi
 
 # 3. Angular Prod Build
-if [ -e "%DEPLOYMENT_SOURCE%/angular.json" ]; then
-  cd "%DEPLOYMENT_SOURCE"
+if [ -e "$DEPLOYMENT_SOURCE/angular.json" ]; then
+  cd "$DEPLOYMENT_SOURCE"
   echo "Running $NPM_CMD run build"
   eval $NPM_CMD run build
   exitWithMessageOnError "npm failed"
@@ -127,7 +127,7 @@ fi
 
 # 4. KuduSync
 if [[ "$IN_PLACE_DEPLOYMENT" -ne "1" ]]; then
-  "$KUDU_SYNC_CMD" -v 50 -f "$DEPLOYMENT_SOURCE" -t "$DEPLOYMENT_TARGET" -n "$NEXT_MANIFEST_PATH" -p "$PREVIOUS_MANIFEST_PATH" -i ".git;.hg;.deployment;deploy.sh"
+  "$KUDU_SYNC_CMD" -v 50 -f "$DEPLOYMENT_SOURCE/dist" -t "$DEPLOYMENT_TARGET" -n "$NEXT_MANIFEST_PATH" -p "$PREVIOUS_MANIFEST_PATH" -i ".git;.hg;.deployment;deploy.sh"
   exitWithMessageOnError "Kudu Sync failed"
 fi
 
